@@ -1,7 +1,11 @@
 import logo from './logo.svg';
 import './App.css';
-
+import Navbar from './Components/Navbar/Navbar';
+import React,{useState} from "react"
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { TaskProvider } from "./Components/TaskContext.jsx";
 function App() {
+  const [filters, setFilters] = useState({ category: "All", dueDate: "" })
   return (
     <div className="App">
       <header className="App-header">
@@ -18,6 +22,11 @@ function App() {
           Learn React
         </a>
       </header>
+      <TaskProvider>
+      <Router>
+      <Navbar onFilterChange={setFilters} />
+      </Router>
+      </TaskProvider>
     </div>
   );
 }
