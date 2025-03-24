@@ -17,7 +17,7 @@ function App() {
       <Routes>
           <Route path="/list" element={<Taskboard filters={filters}/>} />
           <Route path="/board" element={<Board filters={filters}/>} />
-          <Route path="*" element={<Navigate to="/board" />} />
+          <Route path="*" element={<Navigate to="/list" />} />
         </Routes>
       </Router>
       </TaskProvider>
