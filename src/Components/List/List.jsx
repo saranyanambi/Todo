@@ -1,18 +1,18 @@
 import { useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { v4 as uuidv4 } from "uuid";
-import { Card, CardContent, Typography, Button, IconButton , Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,TextField} from "@mui/material";
+import { Button, IconButton , Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import Grid from '@mui/material/Grid';
+
 import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
 import { useTasks } from "../TaskContext.jsx";
-import Navbar from "../Navbar/Navbar.jsx";
+
 
 const Taskboard = ({filters}) => {
   const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
@@ -22,8 +22,7 @@ const Taskboard = ({filters}) => {
   const [date,setDate]=useState("");
   const [category,setCategory]=useState("")
   const [show,setShow]=useState(false)
-  const [selectedCategory, setSelectedCategory] = useState("All");
-  const [selectedDueDate, setSelectedDueDate] = useState("");
+  
   const [selectedStatus, setSelectedStatus] = useState("todo");
 
   const onDragEnd = (result) => {
@@ -56,13 +55,13 @@ const Taskboard = ({filters}) => {
           <Accordion key={status} defaultExpanded 
          >
             <AccordionSummary expandIcon={<ExpandMoreIcon />}  sx={{
-    backgroundColor: status === "TODO" ? "##FAC3FF" : 
+    backgroundColor: status === "todo" ? "##FAC3FF" : 
                      status === "inProgress" ? "#85D9F1" : 
                      status === "completed" ? "#CEFFCC" : "white"
   }}>
               <Box>{status.replace(/([A-Z])/g, " $1")} ({tasksList.length})</Box>
             </AccordionSummary>
-            <AccordionDetails style={{backgroundColor:"#0000001A"}}>
+            <AccordionDetails >
               <Droppable droppableId={status}>
                 {(provided) => (
                   <div ref={provided.innerRef} {...provided.droppableProps}>
@@ -89,7 +88,7 @@ const Taskboard = ({filters}) => {
 
                     <Box >
                     <select onChange={(e)=>setSelectedStatus(e.target.value)}>
-                    <option value="TODO">todo
+                    <option value="todo">todo
                     </option>
                     <option value="inProgress">
                     inprogress
@@ -119,6 +118,7 @@ const Taskboard = ({filters}) => {
                 </Box>)}
                 </div>
               )}
+              {tasksList.length==0?(<Box>No Tasks in {status}</Box>):(
                     <TableContainer component={Paper} style={{backgroundColor:"#0000001A"}}>
                     <Table>
                       <TableHead>
@@ -130,7 +130,7 @@ const Taskboard = ({filters}) => {
                         </TableRow>
                       </TableHead>
                       <TableBody ref={provided.innerRef} {...provided.droppableProps}>
-                        {tasksList.filter(task =>  (filters.category === "All" || task.category === filters.category) &&
+                        {tasksList.filter(task =>  (filters.category === "All" || task.category.toLowerCase() === filters.category.toLowerCase()) &&
                         (filters.dueDate === "" || task.due === filters.dueDate)).map((task, index) =>  (
                           <Draggable key={task.id} draggableId={task.id} index={index}>
                             {(provided) => (
@@ -163,6 +163,7 @@ const Taskboard = ({filters}) => {
                       </TableBody>
                     </Table>
                   </TableContainer>
+              )}
                   </div>
                 )}
               </Droppable>

@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+
 import './App.css';
 import Navbar from './Components/Navbar/Navbar';
 import React,{useState} from "react"
@@ -6,11 +6,12 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import { TaskProvider } from "./Components/TaskContext.jsx";
 import Taskboard from './Components/List/List.jsx';
 import Board from './Components/Board/Board.jsx';
+import { AuthProvider } from "./AuthContext";
 function App() {
   const [filters, setFilters] = useState({ category: "All", dueDate: "" })
   return (
     <div className="App">
-      
+      <AuthProvider>
       <TaskProvider>
       <Router>
       <Navbar onFilterChange={setFilters} />
@@ -21,6 +22,7 @@ function App() {
         </Routes>
       </Router>
       </TaskProvider>
+      </AuthProvider>
     </div>
   );
 }

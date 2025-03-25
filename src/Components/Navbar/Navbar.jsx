@@ -5,8 +5,12 @@ import { Search } from "@mui/icons-material";
 import { InputAdornment } from "@mui/material";
 import { Link, useLocation } from "react-router-dom";
 import { ViewList, ViewModule } from "@mui/icons-material";
+import { signInWithGoogle, logOut } from "../../firebase/firebase";
+import { useAuth } from "../../AuthContext";
+
 
 const Navbar = ({ onFilterChange }) => {
+  const { user } = useAuth();
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedDueDate, setSelectedDueDate] = useState("");
   const location = useLocation();
@@ -18,13 +22,24 @@ const Navbar = ({ onFilterChange }) => {
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 2, p: 2, backgroundColor: "#f8f9fa" }}>
       
-      {/* Logo and Name */}
+
+     <Box sx={{display:"flex",justifyContent:"space-between"}}>
       <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
         <img src="/task_icon.png" alt="Task Icon" width={30} height={30} />
         <span style={{ fontSize: "1.2rem", fontWeight: "bold" }}>Taskbuddy</span>
       </Box>
 
-      {/* Navigation Buttons */}
+      <Box>
+        {user &&(
+        <div>
+          <p>{user.displayName}</p>
+          
+        </div>
+      ) }
+        </Box>
+        </Box>
+
+      <Box sx={{display:"flex",justifyContent:"space-between"}}>
       <Box sx={{ display: "flex", gap: 2 }}>
         <Button component={Link} to="/list" startIcon={<ViewList />} variant={location.pathname === "/list" ? "contained" : "text"}>
           List
@@ -34,10 +49,23 @@ const Navbar = ({ onFilterChange }) => {
         </Button>
       </Box>
 
-      {/* Filter and Search Section */}
+      <Box>
+        <Box>
+        {user ? (
+        <div>
+     
+          <button onClick={logOut}>Log Out</button>
+        </div>
+      ) : (
+        <button onClick={signInWithGoogle}>Sign in with Google</button>
+      )}
+        </Box>
+        </Box>
+      </Box>
+    
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%", flexWrap: "wrap", gap: 2 }}>
         
-        {/* Filter Options */}
+      
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
           <Box sx={{ fontWeight: "bold" }}>Filter by:</Box>
 
@@ -57,7 +85,7 @@ const Navbar = ({ onFilterChange }) => {
           </Button>
         </Box>
 
-        {/* Search & Add Task */}
+     
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
           <TextField
             size="small"

@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
-import { Card, CardContent, Typography, Box, Button, MenuItem, Select } from "@mui/material";
-import { v4 as uuidv4 } from "uuid";
+import { Card, CardContent, Typography, Box } from "@mui/material";
+
 import { useTasks } from "../TaskContext.jsx";
 
 
